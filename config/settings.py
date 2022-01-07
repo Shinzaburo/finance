@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'xos=ztwx!(djj*ja)&5#m=r#ztmqo%cgb6odpm8gkxs!!c53+8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -95,6 +95,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+ACCOUNT_LOGOUT_ON_GET = True
 
 
 # Database

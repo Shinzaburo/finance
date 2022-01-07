@@ -19,7 +19,7 @@
     <h1 class="text-center mt-1"><i class="far fa-calendar-alt m-2"></i>家計簿アプリ</h1>
 
     {% block allauth %}
-      {% if messages %}
+      {% comment %} {% if messages %}
       <div>
       <strong>Messages:</strong>
       <ul>
@@ -28,7 +28,7 @@
           {% endfor %}
       </ul>
       </div>
-      {% endif %}
+      {% endif %} {% endcomment %}
     {% endblock %}
     {% block content %}{% endblock %}
     {% block extra_body %}{% endblock %}
