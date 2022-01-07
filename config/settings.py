@@ -56,7 +56,9 @@ INSTALLED_APPS = [
     'allauth.account', # ←追加
     'allauth.socialaccount', # ←追加
 
-    'finance.apps.FinanceConfig'
+    "crispy_forms",
+    
+    'finance.apps.FinanceConfig',
 
 ]
 
@@ -91,6 +93,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 # Database

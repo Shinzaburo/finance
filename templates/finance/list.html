@@ -100,7 +100,7 @@
                 <td>
                     <form action="{% url 'finance:balance_delete' balance.id %}" method="POST" onsubmit="if(confirm('本当に削除しますか？')){ return true } else { return false };">
                         {% csrf_token %}
-                        <input style="aline-items:center;" class="btn btn-outline-danger" type="submit" value="削除">
+                        <input style="aline-items:center;" class="btn btn-outline-danger text-center" type="submit" value="削除">
                     </form>
                 </td>
             </tr>
