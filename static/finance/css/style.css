@@ -21,6 +21,7 @@ body {
 }
 .header_link:hover i, .header_link:hover .logout {
     color:crimson;
+    transition: 0.3s;
 }
 
 .header_link i {
@@ -37,6 +38,47 @@ body {
     margin-left:2rem;
 }
 
+/* message area */
+
+.message{
+    width: fit-content;
+    color:white;
+    padding:1rem;
+    margin:1rem auto;
+    border-radius:0.5rem;
+    box-shadow:3px 3px 2px gray;
+    display:flex;
+}
+.message_success{
+    background:forestgreen;
+}
+.message_error{
+    background:crimson;
+}
+.message_content {
+    width:calc(100% - 2rem);
+    font-size:1.25rem;
+}
+.message_delete {
+    cursor:pointer;
+    width:2rem;
+    transition:0.2s;
+}
+.message_delete i{
+    display: flex;
+    justify-content:center;
+    font-size:1.25rem;
+    margin-top: 0.35rem;
+}
+.message_delete:hover{
+    color:black;
+    transition:0.2s;
+}
+
+
+
+
+
 
 
 /* calender area */
@@ -44,6 +86,7 @@ body {
     display: flex;
     text-align: center;
 }
+
 .calender {
     text-align:center;
     font-size:1.5rem;
@@ -53,7 +96,7 @@ body {
     margin:0.5rem auto 0;
 }
 .calender td{ 
-    padding:0.5rem;
+    padding:0.25rem;
     border:solid 0.1rem black;
 }
 .calender td:nth-child(1) {
@@ -72,9 +115,23 @@ body {
 .calender td{ 
     width:calc(100%/7);
 }
+
+.day_detail{
+    font-size:1.1rem;
+    height:calc(1.1rem + 13.2px);
+}
+
+.day_cell_small{
+    display:flex;
+}
+.day_cell_small_inner{
+    width:50%;
+}
 .day_detail_mark{
     display:none;
 }
+.day_detail_mark_spending{ background:red; }
+.day_detail_mark_income{ background:blue; }
 @media (max-width:800px){
     .day_detail{
         display:none;
@@ -99,11 +156,9 @@ body {
 .day_cell div:last-child{
     color: red;
 }
-.day_cell_small div:first-child {
-    background: blue;
-}
-.day_cell_small div:last-child {
-    background: red;
+.calender_month_link {
+    padding:0 0.5rem;
+    font-size:1.5rem;
 }
 
 
@@ -164,82 +219,103 @@ input[type="checkbox"].income_chk:checked + label.income_chk_label:before{
 }
 
 
-
 /*category view area*/
 .category_view_area {
     background-color: rgb(233, 247, 107);
     border-radius:0.5rem;
     padding:1rem;
     margin:1rem 0;
-    box-shadow: 0.2rem 0.2rem 0.1rem gray;
 }
-.category_table {
-    height: 8rem;
-    overflow: auto;
+.category_view_area label {
+    margin:0;
 }
-.category_th, .category_tb {
-    display: flex;
-    text-align: center;
+
+.category_list_area {
+    height:20rem;
+    overflow:auto;
+    
 }
-.category_th {
-    position: sticky;
-    top: 0;
+.category_list_header {
+    
+    display:flex;
     background-color: rgb(233, 247, 107);
-    font-weight: bold;
-    border-bottom: solid black 0.1rem;
+
+    font-weight:bold;
+    font-size:1.2rem;
+    border-bottom:solid 0.2rem black; 
+    padding:0.5rem 0;
+    
+    position:sticky;
+    top:0;
+
 }
-.category_tb {
-    border-bottom:solid gray 0.1rem;
-    padding: 1rem 0;
-}
-.category_th div,.category_tb div {
+.category_list_header_content {
+    text-align:center;
     width:calc(100%/3);
 }
-.category_content , .category_edit_form {
-    width:(calc(100%*2/3));
+
+.category_chk{
+    display:none;
 }
-.category_content {
+.category_list_view{
     display:flex;
-
+    border-bottom:solid 0.1rem gray; 
+    align-items: center;
+    justify-content: center;
+    padding:0.5rem 0;
 }
-.category_content_col {
-    width:50%;
+.category_list_view_content {
+
+    text-align:center;
+    width:calc(100%/3);
 }
+.category_list_view_content_name {
+    font-size:1.1rem;
+}
+.category_list_view_content_income { color:white;padding:0.25rem 1rem;border-radius:0.5rem;background:forestgreen; }
+.category_list_view_content_spending { color:white;padding:0.25rem 1rem;border-radius:0.5rem;background:crimson; }
 
-
-
-
-/* category edit area */
-.category_edit_chk {
+.category_list_edit{
     display:none;
+    border-bottom:solid 0.1rem gray; 
+    align-items: center;
+    justify-content: center;
+    padding:0.5rem 0;
 }
-.category_edit_form{
-    display:none;
+.category_list_edit_content {
+    text-align:center;
+    width:calc(100%/3);
 }
-.category_edit_label{
-    padding:0.25rem;
-    border:solid 0.2rem orange;
-    border-radius:0.25rem;
+
+input[type="checkbox"].category_chk:checked ~ .category_list_edit { display:flex; }
+input[type="checkbox"].category_chk:checked ~ .category_list_view { display:none; }
+
+
+/*編集ボタン*/
+.category_chk_label{ border-radius:0.5rem;padding:0.25rem 0.5rem;cursor:pointer;transition:0.2s;background:transparent; }
+.category_chk_label_start{ border:solid 0.2rem forestgreen; }
+.category_chk_label_cancel{ border:solid 0.2rem crimson; }
+.category_chk_label_start:hover{ background:forestgreen;color:white;transition:0.2s; }
+.category_chk_label_cancel:hover{ background:crimson;color:white;transition:0.2s; }
+
+.category_edit_submit{
+    background:transparent;
+    border-radius:0.5rem;
+    padding:0.25rem 0.5rem;
     cursor:pointer;
+    border:solid 0.2rem deepskyblue;
+    transition:0.2s;
 }
-.category_edit_label i{
-    font-size:1.25rem;
+.category_edit_submit:hover{
+    color:white;
+    background:deepskyblue;
+    transition:0.2s;
 }
-input[type="checkbox"].category_edit_chk:checked ~ .category_edit_label{
-    background:orange;
-}
-input[type="checkbox"].category_edit_chk:checked ~ .category_edit_form{
-    display:block;
-}
-input[type="checkbox"].category_edit_chk:checked ~ .category_content{
-    display:none;
-}
-
 
 
 
 /* tab system area */
-.tab_radio {
+/* .tab_radio {
     display:none;
 }
 .tab_area {
@@ -266,10 +342,103 @@ input[type="radio"].tab_radio:checked + .tab_label {
 input[type="radio"]#tab_radio_1:checked ~ #tab_area_1 { display:block; }
 input[type="radio"]#tab_radio_2:checked ~ #tab_area_2 { display:block; }
 input[type="radio"]#tab_radio_3:checked ~ #tab_area_3 { display:block; }
-/* input[type="radio"]#tab_radio_4:checked ~ #tab_area_4 { display:block; } */
+input[type="radio"]#tab_radio_4:checked ~ #tab_area_4 { display:block; } */
 /* input[type="radio"]#tab_radio_5:checked ~ #tab_area_5 { display:block; } */
 /* input[type="radio"]#tab_radio_6:checked ~ #tab_area_6 { display:block; } */
 
 .category_of_balances { 
     flex-flow: column;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
+body{
+  padding:0;
+  margin:0;
+  background:#fff;
+}
+/* h1{
+  text-align:center;
+  font:300 40px 'open sans',sans-serif;
+  color:#666;
+  text-transform:uppercase;
+} */
+.tabs{
+  width:100%;
+  margin:1rem auto;
+  position:relative;
+}
+.tab-buttons span{
+  font:400 1rem 'open sans',sans-serif;
+  color:#333;
+  background:#eee;
+  cursor:pointer;
+  border-bottom:2px solid #ddd;
+  display:block;
+  width:20%;
+  float:left;
+  text-align:center;
+  height: 2.5rem;
+  line-height:3rem;
+}
+.tab-content{
+  width: 100%;
+  border-bottom:3px solid #ddd;
+  padding:1rem;
+  background:#eee;
+  display:inline-block;
+  font:400 13px 'open sans',sans-serif;
+  color:#333;
+  align-items: center;
+}
+/* .tab-content .content2{
+    position: absolute;
+    left: calc(40%/2);
+    width: 60%;
+} */
+#lamp{
+  width:20%;
+  height:2px;
+  background:#333;
+  display:block;
+  position:absolute;
+  top:40px;
+  transition: all .2s ease-in;
+-o-transition: all .2s ease-in;
+-webkit-transition: all .2s ease-in;
+-moz-transition: all .2s ease-in;
+}
+#lamp.content2{
+  left:20%;
+  transition: all .2s ease-in;
+-o-transition: all .2s ease-in;
+-webkit-transition: all .2s ease-in;
+-moz-transition: all .2s ease-in;
+}
+#lamp.content3{
+  left:40%;
+  transition: all .2s ease-in;
+-o-transition: all .2s ease-in;
+-webkit-transition: all .2s ease-in;
+-moz-transition: all .2s ease-in;
+}
+#lamp.content4{
+    left:60%;
+    transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  -moz-transition: all .2s ease-in;
+}
+#lamp.content5{
+    left:80%;
+    transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  -moz-transition: all .2s ease-in;
+}
+#lamp.content1{
+  left:0;
+  transition: all .2s ease-in;
+-o-transition: all .2s ease-in;
+-webkit-transition: all .2s ease-in;
+-moz-transition: all .2s ease-in;
 }

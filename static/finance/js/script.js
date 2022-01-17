@@ -5,12 +5,25 @@ window.addEventListener("load" , function (){
     }
     flatpickr("[name='pay_date']", config_pay_date);
 
+
+    $('.tab-content>div').hide();
+    $('.tab-content>div').first().slideDown();
+    $('.tab-buttons span').click(function(){
+    var thisclass=$(this).attr('class');
+    $('#lamp').removeClass().addClass('#lamp').addClass(thisclass);
+    $('.tab-content>div').each(function(){
+        if($(this).hasClass(thisclass)){
+          $(this).fadeIn(500);
+        }
+        else{
+          $(this).hide();
+        }
+        });
+    });
+
+
+    //DjangoMessageFrameWorkの削除機能
+    $(".message_delete").on("click", function(){ $(this).parent(".message").remove(); });
+
+
 });
-
-// document.addEventListener('load',function() {
-
-//     let calcResult = eval(document.getElementById('m_income').innerText-document.getElementById('m_spending').innerText);
-//     document.getElementById('m_balance').innerText = calcResult;
-
-//     console.log(calcResult)
-// });

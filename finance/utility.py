@@ -20,6 +20,7 @@ def callender(dt,topics):
         next_month  = "?year=" + str(dt.year) + "&month=" + str(dt.month + 1)
         prev_month  = "?year=" + str(dt.year) + "&month=" + str(dt.month - 1)
 
+
     #topicsの中にある日付のリストを作る
     topic_dts   = []
     for topic in topics:

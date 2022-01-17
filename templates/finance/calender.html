@@ -4,9 +4,12 @@
 <div class="mx-5 year_month_select">
     <form action="" method="GET">
         <div class="d-flex p-1 bd-highlight" >
+
+            <a class="calender_month_link" href="{{ prev_month }}"><i class="fas fa-chevron-left"></i></a>
+
             <select class="mr-3 custom-select" name="year">
-                {% for year in year_list %}
-                <option value="{{ year }}" {% if year == request.GET.year %}selected{% endif %}>{{ year }}</option>
+                {% for y in year_list %}
+                <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
                 {% endfor %}
             </select>
                     
@@ -26,41 +29,54 @@
             </select>
         
             <input class="btn btn-success" type="submit" value="検索">
+
+            <a class="calender_month_link" href="{{ next_month }}"><i class="fas fa-chevron-right"></i></a>
+
         </div>
     </form>
 </div>
 
-<table class="calender">
-    <thead>
-        <tr class="calender_head">
-            <td>日</td>
-            <td>月</td>
-            <td>火</td>
-            <td>水</td>
-            <td>木</td>
-            <td>金</td>
-            <td>土</td>
-        </tr>
-    </thead>
-    <tbody>
-        {% for week_date in month_date %}
-        <tr>
-            {% for day in week_date %}
-            <td>
-                <div class="day_cell">
-                    <div>{{ day.day }}</div>
-                    <!--chart.jsで読み取れるよう。ここに収支を意味するクラス名をセット-->
-                    <div class="day_detail">{{ day.income|default:""|intcomma   }}</div>
-                    <div class="day_detail">{{ day.spending|default:""|intcomma }}</div>
-                </div>
-                <!--TODO:収入と支出で色を分ける-->
-                <div class="day_cell_small">
-                    {% if day.income   %}<div class="day_detail_mark"></div>{% endif %}
-                    {% if day.spending %}<div class="day_detail_mark"></div>{% endif %}
-                </div>
-            </td>
+<div class="text-center">残金 : {{ all_sum|default:"0"|intcomma }}円</div>
+
+<div class="table-responsive">
+    <table class="calender table">
+        <thead>
+            <tr class="calender_head">
+                <td>日</td>
+                <td>月</td>
+                <td>火</td>
+                <td>水</td>
+                <td>木</td>
+                <td>金</td>
+                <td>土</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for week_date in month_date %}
+            <tr>
+                {% for day in week_date %}
+                <td>
+                    <div class="day_cell">
+                        <div>{{ day.day }}</div>
+                        <!--chart.jsで読み取れるよう。ここに収支を意味するクラス名をセット-->
+                        <div class="day_detail">{{ day.income|default:""|intcomma   }}</div>
+                        <div class="day_detail">{{ day.spending|default:""|intcomma }}</div>
+                    </div>
+                    <!--TODO:収入と支出で色を分ける-->
+                    <div class="day_cell_small">
+                        <div class="day_cell_small_inner"><div class="day_detail_mark {% if day.income   %}day_detail_mark_income{% endif %}"></div>  </div>
+                        <div class="day_cell_small_inner"><div class="day_detail_mark {% if day.spending %}day_detail_mark_spending{% endif %}"></div></div>
+                    </div>
+                </td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </tbody>
+    </table>
+
+</div>
+
+
+
+<div>{{ year}}年{{ month }}月    収入:{{ this_month_income|default:"0"|intcomma }}円     支出:{{ this_month_spending|default:"0"|intcomma }}円</div>
+{% comment %} <div>{{ year}}年{{ month }}月の支出:{{ this_month_spending|default:"0"|intcomma }} 円</div> {% endcomment %}

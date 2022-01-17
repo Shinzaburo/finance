@@ -11,6 +11,12 @@ from .forms import CategoryForm,BalanceForm,YearMonthForm
 
 import datetime
 
+
+#↓追加
+from django.contrib import messages
+
+
+
 class IndexView(LoginRequiredMixin,View):
     
     #日ごとの収支計算し返却する。
@@ -54,12 +60,18 @@ class IndexView(LoginRequiredMixin,View):
 
         form    = YearMonthForm(request.GET)
 
+        cleaned_month   = None
+        cleaned_year    = None
+
         #指定された年月のデータを取得。指定がない・誤りがある場合は今月のデータを取得。
         if form.is_valid():
             cleaned_data    = form.clean()
 
             print(cleaned_data["month"])
             print(cleaned_data["year"])
+
+            cleaned_month   = cleaned_data["month"]
+            cleaned_year    = cleaned_data["year"]
 
             dt  = datetime.datetime(year=cleaned_data["year"],month=cleaned_data["month"],day=1)
 
@@ -92,14 +104,29 @@ class IndexView(LoginRequiredMixin,View):
 
         #年リストを作り、Selectタグを作る。
         year_list   = []
+
         oldest_year = oldest_pay_date.year
         newest_year = newest_pay_date.year
 
+        if cleaned_year != None:
+            if cleaned_year <= oldest_pay_date.year:
+                oldest_year = cleaned_year
+            elif newest_pay_date.year <= cleaned_year:
+                newest_year = cleaned_year
+
+
+        """
         for i in range(oldest_year,newest_year+1,1):
             year_list.append(i)
+        """
+        #年表示新しい順
+        for i in range(newest_year,oldest_year-1,-1):
+            year_list.append(i)
+
 
         context["year_list"]    = year_list
         context["month"]        = dt.month
+        context["year"]         = dt.year
 
         print(oldest_pay_date)
         print(newest_pay_date)
@@ -194,15 +221,92 @@ class IndexView(LoginRequiredMixin,View):
         context["category_of_balances"] = category_of_balances
 
 
-        context["monthly_income"]   = Balance.objects.filter(user=request.user.id,category__income=True).annotate(date=TruncMonth("pay_date")).values("date").annotate(count=Count("id"),amount=Sum("value")).values("date","amount", "count").order_by("date")
-        context["monthly_spending"] = Balance.objects.filter(user=request.user.id,category__income=False).annotate(date=TruncMonth("pay_date")).values("date").annotate(count=Count("id"),amount=Sum("value")).values("date","amount", "count").order_by("date")
+        context["monthly_income"]   = Balance.objects.filter(user=request.user.id,category__income=True).annotate(date=TruncMonth("pay_date")).values("date").annotate(count=Count("id"),amount=Sum("value")).values("date","amount", "count").order_by("-date")
+        context["monthly_spending"] = Balance.objects.filter(user=request.user.id,category__income=False).annotate(date=TruncMonth("pay_date")).values("date").annotate(count=Count("id"),amount=Sum("value")).values("date","amount", "count").order_by("-date")
 
 
-        """
-        context["monthly"]  = Balance.objects.filter(user=request.user.id,category__income=True).annotate(date=TruncMonth("pay_date")).values("date").annotate(
-                                count=Count("id"),amount=Sum("value")).values("date","amount", "count").order_by("-date")
-        """
+        
+        #TODO:今月の支出と収入を計算する(今月の自分が投稿したデータで、.aggregate()とSumを使用することで、指定したフィールドの合計値を算出できる。)
 
+        this_month_income = Balance.objects.filter(user=request.user.id, category__income=True, pay_date__year=init_dt.year, pay_date__month=init_dt.month).aggregate(Sum("value"))
+        context["this_month_income"] = this_month_income["value__sum"]
+        
+
+        this_month_spending = Balance.objects.filter(user=request.user.id, category__income=False, pay_date__year=init_dt.year, pay_date__month=init_dt.month).aggregate(Sum("value"))
+        context["this_month_spending"] = this_month_spending["value__sum"]
+
+
+        this_year_income = Balance.objects.filter(user=request.user.id, category__income=True, pay_date__year=init_dt.year).aggregate(Sum("value"))
+        this_year_spending = Balance.objects.filter(user=request.user.id, category__income=False, pay_date__year=init_dt.year).aggregate(Sum("value"))
+
+        #Noneであるにもかかわらず演算をしている。
+        if not this_year_income["value__sum"]:
+            this_year_income["value__sum"] = 0
+            
+        if not this_year_spending["value__sum"]:
+            this_year_spending["value__sum"] = 0
+
+        print( init_dt.year , "年の収支は", this_year_income["value__sum"] - this_year_spending["value__sum"] ,"円です。")
+
+
+
+        month_list  = []
+        for i in range(1,13):
+            this_month_income = Balance.objects.filter(user=request.user.id, category__income=True, pay_date__year=init_dt.year, pay_date__month=i).aggregate(Sum("value"))
+            this_month_spending = Balance.objects.filter(user=request.user.id, category__income=False, pay_date__year=init_dt.year, pay_date__month=i).aggregate(Sum("value"))
+
+            if not this_month_income["value__sum"]:
+                this_month_income["value__sum"] = 0
+                
+            if not this_month_spending["value__sum"]:
+                this_month_spending["value__sum"] = 0
+
+            dic = {}
+            dic["month"]    = str(i)
+            dic["value"]    = this_month_income["value__sum"] - this_month_spending["value__sum"]
+            month_list.append(dic)
+
+        print(month_list)
+
+        context["month_list"] = month_list
+
+
+        income_all_sum = Balance.objects.filter(user=request.user.id,category__income=True).aggregate(Sum("value"))
+        spending_all_sum = Balance.objects.filter(user=request.user.id,category__income=False).aggregate(Sum("value"))
+
+        #Noneであるにもかかわらず演算をしている。
+        if not income_all_sum["value__sum"]:
+            income_all_sum["value__sum"] = 0
+                    
+        if not spending_all_sum["value__sum"]:
+            spending_all_sum["value__sum"] = 0
+
+        print(income_all_sum["value__sum"] - spending_all_sum["value__sum"])
+
+        context["income_all_sum"]  =  income_all_sum
+        context["spending_all_sum"]  =  spending_all_sum
+        context["all_sum"]  =  income_all_sum["value__sum"] - spending_all_sum["value__sum"]
+
+
+
+        #先月と来月のリンクを作る
+        if init_dt.month == 12: 
+            #来月の計算はyearを1追加、monthを1にする。先月はそのまま1減らす。
+            next_month  = "?year=" + str(init_dt.year + 1) + "&month=" + str(1)
+            prev_month  = "?year=" + str(init_dt.year) + "&month=" + str(init_dt.month -1) 
+
+        elif init_dt.month == 1:
+            #先月の計算はyearを1減らす、monthを12にする。来月はそのまま1追加。
+            next_month  = "?year=" + str(init_dt.year) + "&month=" + str(init_dt.month + 1)
+            prev_month  = "?year=" + str(init_dt.year - 1) + "&month=" + str(12)
+
+        else:
+            #来月、先月それぞれ1追加、1減らすだけでいい
+            next_month  = "?year=" + str(init_dt.year) + "&month=" + str(init_dt.month + 1)
+            prev_month  = "?year=" + str(init_dt.year) + "&month=" + str(init_dt.month - 1)
+
+        context["next_month"]   = next_month
+        context["prev_month"]   = prev_month
 
 
         return render(request,"finance/index.html",context)
@@ -216,10 +320,11 @@ class IndexView(LoginRequiredMixin,View):
         form    = BalanceForm(copied)
 
         if form.is_valid():
-            print("OK")
+            #TODO:このようにmessagesにメッセージをセットする。
+            messages.success(request, "収支を反映しました")
             form.save()
         else:
-            print("NG")
+            messages.error(request, "収支を反映できませんでした")
 
 
         return redirect("finance:index")
@@ -229,6 +334,9 @@ index   = IndexView.as_view()
 
 class CategoryView(View):
 
+    def get(self, request, pk, *args, **kwargs):
+        return redirect("finance:index")
+
     def post(self, request, *args, **kwargs):
 
         copied          = request.POST.copy()
@@ -237,26 +345,32 @@ class CategoryView(View):
         form    = CategoryForm(copied)
 
         if form.is_valid():
-            print("OK")
+            messages.success(request, "カテゴリを追加しました")
             form.save()
         else:
-            print("NG")
+            
+            messages.error(request, "カテゴリを追加できませんでした" )
+            messages.error(request, form.errors  )
 
         return redirect("finance:index")
 
 category    = CategoryView.as_view()
 
 
-#編集
-class FinanceEditView(View):
+#カテゴリ編集(ログインユーザー専用)
+class CategoryEditView(LoginRequiredMixin,View):
 
     def get(self, request, pk, *args, **kwargs):
-
         return redirect("finance:index")
 
     def post(self, request, pk, *args, **kwargs):
 
-        instance    = Category.objects.filter(id=pk).first()
+        instance    = Category.objects.filter(id=pk,user=request.user.id).first()
+
+        if not instance:
+            messages.error(request, "カテゴリを編集できませんでした")
+            return redirect("finance:index")
+
 
         copied          = request.POST.copy()
         copied["user"]  = request.user.id 
@@ -265,17 +379,39 @@ class FinanceEditView(View):
         formset     = CategoryForm(copied, instance=instance)
 
         if formset.is_valid():
-            print("バリデーションOK")
+            messages.success(request, "カテゴリを編集しました")
             formset.save()
         else:
-            print("バリデーションNG")
+            print(formset.errors)
+            messages.error(request, "カテゴリを編集できませんでした")
 
         return redirect("finance:index")
 
-edit   = FinanceEditView.as_view()
+category_edit   = CategoryEditView.as_view()
 
 
-#削除
+#カテゴリ削除(ログインユーザー専用)
+class CategoryDeleteView(LoginRequiredMixin,View):
+
+    def get(self, request, pk, *args, **kwargs):
+
+        return redirect("finance:index")
+
+    def post(self, request, pk, *args, **kwargs):
+
+        category    = Category.objects.filter(id=pk,user=request.user.id).first()
+
+        if category:
+            category.delete()
+            messages.success(request, "カテゴリを削除しました")
+        else:
+            messages.error(request, "カテゴリを削除できませんでした")
+
+        return redirect("finance:index")
+
+category_delete = CategoryDeleteView.as_view()
+
+
 class BalanceDeleteView(LoginRequiredMixin,View):
 
     def post(self, request, pk, *args, **kwargs):
@@ -283,11 +419,12 @@ class BalanceDeleteView(LoginRequiredMixin,View):
         balance = Balance.objects.filter(id=pk).first()
 
         if balance.user.id != request.user.id:
+            messages.success(request, "収支を削除できませんでした")
             return redirect("finance:index")
 
         balance.delete()
+        messages.success(request, "収支を削除しました")
 
         return redirect("finance:index")
-
 
 balance_delete  = BalanceDeleteView.as_view()

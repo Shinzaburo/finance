@@ -14,6 +14,12 @@ class CategoryForm(forms.ModelForm):
     class Meta:
         model   = Category
         fields  = [ "name","income","user" ]
+        error_messages = { 
+            'comment': {
+                'max_length': "これで実現できます",
+                'required': "文字列入力してください",
+            },
+        }
 
 
 #モデルを継承しないフォームクラス

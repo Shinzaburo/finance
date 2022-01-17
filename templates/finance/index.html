@@ -42,10 +42,39 @@
         <h1 class="header_title" ><i class="far fa-calendar-alt"></i> 家計簿アプリ</h1>
     </header>
     
+     <!--
+        Djangoメッセージフレームワーク
+        https://docs.djangoproject.com/en/3.2/ref/contrib/messages/#using-messages-in-views-and-templates
+    -->
+
+    {% for message in messages %}
+    <div class="message message_{{ message.tags }}">
+        <div class="message_content">{{ message }}</div>        
+        <div class="message_delete"><i class="fas fa-times"></i></div>
+    </div>
+    {% endfor %}
+
+
     <div class="row mx-0">
         <div class="col-md-6">{% include "finance/calender.html" %}</div>
         <div class="col-md-6">{% include "finance/list.html" %}</div>
     </div>
 
 </body>
+<script>
+    {% comment %} $('.tab-content>div').hide();
+    $('.tab-content>div').first().slideDown();
+      $('.tab-buttons span').click(function(){
+        var thisclass=$(this).attr('class');
+        $('#lamp').removeClass().addClass('#lamp').addClass(thisclass);
+        $('.tab-content>div').each(function(){
+          if($(this).hasClass(thisclass)){
+            $(this).fadeIn(500);
+          }
+          else{
+            $(this).hide();
+          }
+        });
+      }); {% endcomment %}
+</script>
 </html>
