@@ -34,12 +34,19 @@
 
         </div>
     </form>
+
+    <div class="free">
+        <div class="text-center free-money "><i class="fas fa-hand-holding-usd"></i>自由に使えるお金:<div id="free">{{ all_sum|default:"0"|intcomma }}</div>円</div>
+        <input class="btn-outline-info hide-visible visible" type="button" value="表示"  onclick="document.getElementById('free').style.visibility = 'visible';">
+        <input class="btn-outline-info hide-visible hide" type="button" value="非表示" onclick="document.getElementById('free').style.visibility = 'hidden';">
+    </div>
 </div>
 
-<div class="text-center">残金 : {{ all_sum|default:"0"|intcomma }}円</div>
+
+
 
 <div class="table-responsive">
-    <table class="calender table">
+    <table class="calender " style="border-radius: 2rem;">
         <thead>
             <tr class="calender_head">
                 <td>日</td>
@@ -76,7 +83,8 @@
 
 </div>
 
-
-
-<div>{{ year}}年{{ month }}月    収入:{{ this_month_income|default:"0"|intcomma }}円     支出:{{ this_month_spending|default:"0"|intcomma }}円</div>
-{% comment %} <div>{{ year}}年{{ month }}月の支出:{{ this_month_spending|default:"0"|intcomma }} 円</div> {% endcomment %}
+<div class="month_balance">
+    <div class="month_balance_result">{{ year }}年{{ month }}月</div>    
+    <div class="month_balance_result">収入:{{ this_month_income|default:"0"|intcomma }}円</div>
+    <div class="month_balance_result">支出:{{ this_month_spending|default:"0"|intcomma }}円</div>
+</div>

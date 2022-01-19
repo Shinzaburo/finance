@@ -49,7 +49,7 @@
 
     {% for message in messages %}
     <div class="message message_{{ message.tags }}">
-        <div class="message_content">{{ message }}</div>        
+        <div class="message_content">{{ message }}</div>       
         <div class="message_delete"><i class="fas fa-times"></i></div>
     </div>
     {% endfor %}
@@ -61,20 +61,5 @@
     </div>
 
 </body>
-<script>
-    {% comment %} $('.tab-content>div').hide();
-    $('.tab-content>div').first().slideDown();
-      $('.tab-buttons span').click(function(){
-        var thisclass=$(this).attr('class');
-        $('#lamp').removeClass().addClass('#lamp').addClass(thisclass);
-        $('.tab-content>div').each(function(){
-          if($(this).hasClass(thisclass)){
-            $(this).fadeIn(500);
-          }
-          else{
-            $(this).hide();
-          }
-        });
-      }); {% endcomment %}
-</script>
+
 </html>

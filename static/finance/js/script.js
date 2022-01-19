@@ -1,5 +1,7 @@
 window.addEventListener("load" , function (){
 
+  
+
     let config_pay_date   = {
         "locale": "ja"
     }
@@ -20,10 +22,20 @@ window.addEventListener("load" , function (){
         }
         });
     });
+    
+    // document.getElementById("tab-button").onclick = function() {
+    //   this.classList.toggle("push");
+    // };
+   
 
 
     //DjangoMessageFrameWorkの削除機能
     $(".message_delete").on("click", function(){ $(this).parent(".message").remove(); });
+
+    document.getElementById('#free').style.visibility = 'visible';
+
+    
+
 
 
 });

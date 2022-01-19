@@ -350,7 +350,7 @@ class CategoryView(View):
         else:
             
             messages.error(request, "カテゴリを追加できませんでした" )
-            messages.error(request, form.errors  )
+            # messages.error(request, form.errors)
 
         return redirect("finance:index")
 

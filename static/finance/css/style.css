@@ -1,5 +1,8 @@
 body {
     font-family: "Yu Gothic UI","ヒラギノ丸ゴ ProN W4";
+    padding:0;
+    margin:0;
+    background:#fff;
 }
 
 
@@ -39,7 +42,6 @@ body {
 }
 
 /* message area */
-
 .message{
     width: fit-content;
     color:white;
@@ -75,10 +77,30 @@ body {
     transition:0.2s;
 }
 
-
-
-
-
+/*free money area*/
+.free{
+    display: inline-block;
+    text-align: center;
+}
+.free-money{
+    display: inline-flex;
+    background-color: rgba(75, 204, 255, 0.815);
+    border-radius: 0.1rem;
+    margin: 0 1rem;
+    padding: 0.1rem 1rem;
+    box-shadow: 2px 2px 2px gray;
+}
+.free-money i{
+    margin: auto;
+}
+.hide-visible{
+    background: none;
+	border: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+    font-size: 0.8rem;
+}
 
 
 /* calender area */
@@ -94,6 +116,7 @@ body {
     border-radius: 2rem;
     /* カレンダーを中央に配置。 */
     margin:0.5rem auto 0;
+    width:100%;
 }
 .calender td{ 
     padding:0.25rem;
@@ -108,9 +131,6 @@ body {
 .calender_head {
     font-weight:bold;
     border-bottom:double 0.2rem black;
-}
-.calender {
-    width:100%;
 }
 .calender td{ 
     width:calc(100%/7);
@@ -160,26 +180,36 @@ body {
     padding:0 0.5rem;
     font-size:1.5rem;
 }
-
+.month_balance{
+    display: flex;
+    text-align: center;
+    border:0.5rem solid skyblue;
+    margin-top: 1rem;
+}
+.month_balance_result{
+    margin: 1rem auto;
+    font-size: 1.2rem;
+}
 
 
 /* category form area */
 .category_form_area {
-    background:rgb(200, 255, 200);
-    padding:1rem;
-    margin:1rem 0;
+    margin:0.5em 0;
     border-radius:0.5rem;
-    box-shadow: 0.2rem 0.2rem 0.1rem gray;
+}
+.category_form_area h2{
+    margin-bottom: 1rem;
 }
 
 /* balance form area */
 .balance_form_area {
-    background:lavender;
+    background: #eee;
     padding:1rem;
     margin:1rem 0;
     border-radius:0.5rem;
-    box-shadow: 0.2rem 0.2rem 0.1rem gray;
+    box-shadow: 2px 2px 3px gray;
 }
+
 
 
 /* income flag chkbox */
@@ -221,7 +251,7 @@ input[type="checkbox"].income_chk:checked + label.income_chk_label:before{
 
 /*category view area*/
 .category_view_area {
-    background-color: rgb(233, 247, 107);
+    /* background-color: rgb(233, 247, 107); */
     border-radius:0.5rem;
     padding:1rem;
     margin:1rem 0;
@@ -238,8 +268,7 @@ input[type="checkbox"].income_chk:checked + label.income_chk_label:before{
 .category_list_header {
     
     display:flex;
-    background-color: rgb(233, 247, 107);
-
+    background:#eee;
     font-weight:bold;
     font-size:1.2rem;
     border-bottom:solid 0.2rem black; 
@@ -313,132 +342,96 @@ input[type="checkbox"].category_chk:checked ~ .category_list_view { display:none
 }
 
 
-
-/* tab system area */
-/* .tab_radio {
-    display:none;
-}
-.tab_area {
-    display:none;
-}
-.tab_label {
-    border:solid 0.15rem black;
-    padding:0 0.2rem;
-    background:white;
-    cursor:pointer;
-    border-radius: 0.5rem 0.5rem 0 0;
-}
-.tab_label:hover {
-    color:white;
-    background:black;
-}
-
-input[type="radio"].tab_radio:checked + .tab_label {
-    background:royalblue;
-    color:white;
-    padding:0 0.5rem;
-}
-
-input[type="radio"]#tab_radio_1:checked ~ #tab_area_1 { display:block; }
-input[type="radio"]#tab_radio_2:checked ~ #tab_area_2 { display:block; }
-input[type="radio"]#tab_radio_3:checked ~ #tab_area_3 { display:block; }
-input[type="radio"]#tab_radio_4:checked ~ #tab_area_4 { display:block; } */
-/* input[type="radio"]#tab_radio_5:checked ~ #tab_area_5 { display:block; } */
-/* input[type="radio"]#tab_radio_6:checked ~ #tab_area_6 { display:block; } */
-
 .category_of_balances { 
     flex-flow: column;
 }
 
+/* tab system area */
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
-body{
-  padding:0;
-  margin:0;
-  background:#fff;
-}
-/* h1{
-  text-align:center;
-  font:300 40px 'open sans',sans-serif;
-  color:#666;
-  text-transform:uppercase;
-} */
 .tabs{
-  width:100%;
-  margin:1rem auto;
-  position:relative;
+    width:100%;
+    margin:1rem auto;
+    position:relative;
 }
 .tab-buttons span{
-  font:400 1rem 'open sans',sans-serif;
-  color:#333;
-  background:#eee;
-  cursor:pointer;
-  border-bottom:2px solid #ddd;
-  display:block;
-  width:20%;
-  float:left;
-  text-align:center;
-  height: 2.5rem;
-  line-height:3rem;
+    font:400 1rem 'open sans',sans-serif;
+    color:#333;
+    background:#eee;
+    cursor:pointer;
+    border-bottom:2px solid #ddd;
+    border-right: 2px solid #ddd;
+    display:block;
+    width:calc(100%/3);
+    float:left;
+    text-align:center;
+    height: 2.5rem;
+    line-height:3rem;
 }
 .tab-content{
-  width: 100%;
-  border-bottom:3px solid #ddd;
-  padding:1rem;
-  background:#eee;
-  display:inline-block;
-  font:400 13px 'open sans',sans-serif;
-  color:#333;
-  align-items: center;
+    width: 100%;
+    border-bottom:3px solid #ddd;
+    padding:1rem;
+    background:#eee;
+    display:inline-block;
+    font:400 13px 'open sans',sans-serif;
+    color:#333;
+    align-items: center;
 }
-/* .tab-content .content2{
-    position: absolute;
-    left: calc(40%/2);
-    width: 60%;
+/* #lamp{
+    width:calc(100%/3);
+    height:2px;
+    background:#333;
+    display:block;
+    position:absolute;
+    top:40px;
+    transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
 } */
-#lamp{
-  width:20%;
-  height:2px;
-  background:#333;
-  display:block;
-  position:absolute;
-  top:40px;
-  transition: all .2s ease-in;
--o-transition: all .2s ease-in;
--webkit-transition: all .2s ease-in;
--moz-transition: all .2s ease-in;
-}
 #lamp.content2{
-  left:20%;
-  transition: all .2s ease-in;
--o-transition: all .2s ease-in;
--webkit-transition: all .2s ease-in;
--moz-transition: all .2s ease-in;
+    left:calc(100%/3);
+    transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
 }
 #lamp.content3{
-  left:40%;
-  transition: all .2s ease-in;
--o-transition: all .2s ease-in;
--webkit-transition: all .2s ease-in;
--moz-transition: all .2s ease-in;
+    left:calc(100%*2/3);
+    transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
 }
 #lamp.content4{
-    left:60%;
+    left:0%;
     transition: all .2s ease-in;
-  -o-transition: all .2s ease-in;
-  -webkit-transition: all .2s ease-in;
-  -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
 }
 #lamp.content5{
-    left:80%;
+    left:calc(100%/3);
     transition: all .2s ease-in;
-  -o-transition: all .2s ease-in;
-  -webkit-transition: all .2s ease-in;
-  -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+}
+#lamp.content6{
+    left:calc(100%*2/3);
+    transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
 }
 #lamp.content1{
   left:0;
   transition: all .2s ease-in;
--o-transition: all .2s ease-in;
--webkit-transition: all .2s ease-in;
--moz-transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  -moz-transition: all .2s ease-in;
+}
+.tab-buttons span:hover{
+    background-color: lightgray;
+    transition: 0.3s;
 }

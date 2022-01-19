@@ -23,7 +23,7 @@ function draw_pie(target){
     }
 
     console.log(categories);
-    console.log(totals    );
+    console.log(totals);
     
     //色作成(収入の場合は緑系、支出の場合は赤系)
     let colors  = []
