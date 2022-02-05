@@ -10,7 +10,7 @@ window.addEventListener("load" , function (){
 
     $('.tab-content>div').hide();
     $('.tab-content>div').first().slideDown();
-    $('.tab-buttons span').click(function(){
+    $('.tab-buttons>span').click(function(){
     var thisclass=$(this).attr('class');
     $('#lamp').removeClass().addClass('#lamp').addClass(thisclass);
     $('.tab-content>div').each(function(){
@@ -23,19 +23,14 @@ window.addEventListener("load" , function (){
         });
     });
     
-    // document.getElementById("tab-button").onclick = function() {
-    //   this.classList.toggle("push");
-    // };
-   
-
-
+    $('.tab-buttons > span').click(function(){
+      $(".tab-buttons > span").removeClass("tab_selected");    
+      $(this).addClass("tab_selected");
+  });
+    
     //DjangoMessageFrameWorkの削除機能
     $(".message_delete").on("click", function(){ $(this).parent(".message").remove(); });
 
     document.getElementById('#free').style.visibility = 'visible';
-
-    
-
-
 
 });

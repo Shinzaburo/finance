@@ -28,18 +28,22 @@ function draw_pie(target){
     //色作成(収入の場合は緑系、支出の場合は赤系)
     let colors  = []
     var rgb     = 255;
+    var rb      = 100;
+    var gb      = 0;
     var minus   = 255/categories.length;
     
     if (target == "income"){
         for (let c of categories){
-            colors.push("rgb(100, " + String(rgb)+ ", 100)");
+            colors.push("rgb(0,"  + String(rgb)+ "," + String(rb) +")");
             rgb -= minus;
+            rb  -= minus;
         }
     }
     else{
         for (let c of categories){
-            colors.push("rgb(" + String(rgb)+ ",0,0)");
+            colors.push("rgb(" + String(rgb)+ ",0,"+ String(gb) +")");
             rgb -= minus;
+            gb  += (minus*0.4);
         }
     }
 
@@ -55,18 +59,18 @@ function draw_pie(target){
                 borderWidth: 1
             }]
         },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    type:"linear",
-                },
-                x: {
-                    beginAtZero: true,
-                    type:"linear",
-                }
-            }
-        }
+        // options: {
+        //     scales: {
+        //         y: {
+        //             beginAtZero: true,
+        //             type:"linear",
+        //         },
+        //         x: {
+        //             beginAtZero: true,
+        //             type:"linear",
+        //         }
+        //     }
+        // }
     });
     //scaleの指定でグラフの方眼を描画できる
     //https://www.chartjs.org/docs/3.3.2/axes/
