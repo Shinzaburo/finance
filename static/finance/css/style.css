@@ -371,9 +371,6 @@ input[type="checkbox"].category_chk:checked ~ .category_list_view { display:none
     background-color: lightgray;
     transition: 0.3s;
 }
-.tab_selected {
-    background-color:gray;
-}
 .tab-content{
     width: 100%;
     border-bottom:3px solid #ddd;
@@ -437,4 +434,8 @@ input[type="checkbox"].category_chk:checked ~ .category_list_view { display:none
   -o-transition: all .2s ease-in;
   -webkit-transition: all .2s ease-in;
   -moz-transition: all .2s ease-in;
+}
+
+.month_list_table{
+    display: none;
 }

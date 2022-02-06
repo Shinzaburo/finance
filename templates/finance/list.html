@@ -163,10 +163,16 @@
             </div>
         </div>
         <div class='content6'>
-            <div class="row">
-                <div style="position:relative">
+            <div class="row  m-2">
+                <div style="position:relative;width:100%;">
                     <canvas id="month_list_graph"></canvas>
                 </div>
+            </div>
+            <div class="month_list_table">
+                {% for m in month_list %}
+                    <div class="month_list_month">{{ m.month }}月</div>
+                    <div class="month_list_value">{{ m.value|intcomma }}円</div>
+                {% endfor %}
             </div>
         </div>  
 </div>

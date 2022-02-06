@@ -1,13 +1,15 @@
 window.addEventListener("load" , function (){
 
   
+  
 
     let config_pay_date   = {
         "locale": "ja"
     }
     flatpickr("[name='pay_date']", config_pay_date);
 
-
+    $(".tab_selected").css({"background":"silver"});
+    
     $('.tab-content>div').hide();
     $('.tab-content>div').first().slideDown();
     $('.tab-buttons>span').click(function(){
@@ -21,12 +23,12 @@ window.addEventListener("load" , function (){
           $(this).hide();
         }
         });
+
+        $(".tab-buttons > span").css({"background":""});
+        $(this).css({"background":"silver"});
+        
     });
     
-    $('.tab-buttons > span').click(function(){
-      $(".tab-buttons > span").removeClass("tab_selected");    
-      $(this).addClass("tab_selected");
-  });
     
     //DjangoMessageFrameWorkの削除機能
     $(".message_delete").on("click", function(){ $(this).parent(".message").remove(); });
